@@ -32,7 +32,6 @@ Web app (frontend React/NextJS + wallet connect) di mana users bisa:
 * **x402.org**: Protokol untuk seamless HTTP payments, micropayments agent-to-agent tanpa friction https://docs.x402.org
 * **Ethereum.org**: Docs ENS/Basenames untuk naming, plus ERC standards dasar https://ethereum.org/developers/docs
 * **ERC-8004 Spec**: EIP untuk trustless agents—registries Identity, Reputation, Validation via ERC-721 NFTs ephemeral
-  ```bash
   - https://eips.ethereum.org/EIPS/eip-8004
   - https://medium.com/@gwrx2005/erc-8004-and-the-ethereum-ai-agent-economy-technical-economic-and-policy-analysis-3134290b24d1
   - https://www.forbes.com/sites/digital-assets/2026/02/05/ai-agents-gain-trust-via-ethereum-erc-8004-on-mainnet/
@@ -41,9 +40,14 @@ Web app (frontend React/NextJS + wallet connect) di mana users bisa:
 
   
 * **ElizaOS Docs**: Framework TS untuk AI agents autonomous, plugins EVM untuk on-chain actions seperti transfers etc
-```bash
 - https://docs.elizaos.ai
 - https://www.quicknode.com/guides/ai/how-to-setup-an-ai-agent-with-eliza-ai16z-framework
 - https://metamask.io/news/create-an-ai-agent-that-can-transfer-and-swap-tokens-using-elizaos
 - https://ethereum.org/id/apps/elizaos
 
+* **OpenClaw Docs**: Tool untuk autonomous agents, integrate wallets on Base, DeFi skills seperti swaps/yield
+- https://docs.openclaw.ai
+- https://lablab.ai/ai-tutorials/openclaw-tutorial-part-one-ai-hackathons
+- https://onekey.so/blog/ecosystem/base-ai-season-is-here-mapping-the-openclaw-agentic-ecosystem-on-base-20260204133326/?srsltid=AfmBOopGlNvq3P8GV2D8FB6kMBloS8M9lYef4l0Yw6Fb-4jkrAF2g__D
+- https://milvus.io/blog/openclaw-formerly-clawdbot-moltbot-explained-a-complete-guide-to-the-autonomous-ai-agent.md
+- https://rnwy.com/learn/how-to-build-ai-agent-openclaw
