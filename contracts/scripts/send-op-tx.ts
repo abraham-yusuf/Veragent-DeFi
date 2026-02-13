@@ -1,11 +1,11 @@
 import { network } from "hardhat";
 
 const { ethers } = await network.connect({
-  network: "hardhatOp",
+  network: "hardhatBase",
   chainType: "op",
 });
 
-console.log("Sending transaction using the OP chain type");
+console.log("Sending transaction using the OP chain type (Base)");
 
 const [sender] = await ethers.getSigners();
 
