@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+dist/
+.next/
+out/
+build/
+
+# Hardhat / Foundry
+contracts/cache/
+contracts/artifacts/
+contracts/typechain-types/
+contracts/ignition/deployments/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+*.log
+
+# TypeScript
+*.tsbuildinfo
