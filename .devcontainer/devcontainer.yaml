@@ -1,0 +1,35 @@
+name: Veragent-DeFi Codespace
+
+build:
+  dockerfile: Dockerfile
+  context: .
+
+# Workspace Mount
+workspaceFolder: /workspace
+
+# Install tools node24 + pnpm + bun + web3 dev tools
+postCreateCommand: |
+  echo "Installing Bun..."
+  curl -fsSL https://bun.sh/install | bash
+  echo 'export BUN_INSTALL="$HOME/.bun"' >> ~/.bashrc
+  echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> ~/.bashrc
+  source ~/.bashrc
+
+  echo "Installing Python deps (nanobot-ai)..."
+  python3 -m pip install --upgrade pip
+  python3 -m pip install nanobot-ai
+
+  echo "Installing Hardhat Dependencies..."
+  cd /workspace/frontend || exit
+  pnpm install
+  cd /workspace || exit
+
+customizations:
+  vscode:
+    extensions:
+      - dbaeumer.vscode-eslint
+      - esbenp.prettier-vscode
+      - ms-vscode.vscode-typescript-next
+      - msjsdiag.debugger-for-chrome
+
+remoteUser: vscode
