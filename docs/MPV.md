@@ -1,17 +1,19 @@
-# MVP (Minimum Viable Product)
-MVP fokus ke core value: Users deploy simple AI agent untuk manage DeFi portofolio dasar (e.g., yield farming on Base). Launch di testnet Base dulu, biar cepat iterate. Target: 1-2 minggu dev kalau solo.
+# MVP (Minimum Viable Product) - Veragent DeFi
 
-**Fitur Minimal:**
-1. **User Onboarding**: Connect wallet (via CDP Coinbase SDK atau Wagmi), register Basename (ENS integration) untuk agent name seperti "myyieldbot.base.eth".
-2. **Agent Deployment**: No-code builder—pilih template (e.g., "Yield Optimizer"), set params (risk level, assets seperti USDC), deploy via ElizaOS (pakai plugins EVM untuk on-chain setup).
-3. **Autonomous Actions**: Agent (built with OpenClaw) scan APY di pools (e.g., Aerodrome via API), auto-deposit/compound. Track via dashboard sederhana.
-4. **Trust & Payments**: Agent register ke ERC-8004 Identity Registry (ephemeral NFT), bayar fees via x402 (micropayments untuk executions).
-5. **Monitoring**: Real-time logs di web app, notifications kalau action executed.
+Target: 2-4 minggu dev, launch testnet Base.
 
-**Tech Stack untuk MVP:**
-- Frontend: React/NextJS, wallet connect via RainbowKit.
-- Backend/Agents: ElizaOS TS framework + OpenClaw untuk tool-calling (e.g., EVM plugin buat transfers).
-- Smart Contracts: Solidity—deploy ERC-8004 registries di Base (pakai reference impl dari EIP).
-- Deployment: Vercel untuk frontend, Base Sepolia testnet untuk contracts (guides di Base docs).
+## Fitur Minimal
+1. Onboarding: Connect wallet (Bankr built-in untuk cross-chain).
+2. Agent Deployment: Builder no-code (ElizaOS templates + Nanobot lightweight logic).
+3. Execution: Agents monitor/execute yields (Nanobot cron, OpenClaw tools, Bankr wallet untuk tx & token launch).
+4. Trust: ERC-8004 registration.
+5. Monitoring: Dashboard + Nanobot notifications (Telegram).
 
-**Validation**: Test dengan dummy funds, measure metrics seperti execution success rate. Launch ke komunitas X (@bram0511 bisa post progress).
+## Tech untuk MVP
+- Frontend: React/NextJS + RainbowKit.
+- Agents: ElizaOS + Nanobot bridge (pip install nanobot-ai; config multi-LLM).
+- Backend: Bankr SDK (@bankr/sdk) untuk self-funding.
+- Contracts: Solidity ERC-8004.
+- Deployment: Vercel (frontend), Base Sepolia (contracts), local/cloud untuk agents.
+
+Validation: Test dummy funds, measure ROI & fees dari Bankr token.
