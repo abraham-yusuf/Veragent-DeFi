@@ -1,47 +1,43 @@
-# PRD (Product Requirements Document)
+# Product Requirements Document (PRD) - Veragent DeFi Agent Hub
 
-**Product Overview:**
-DeFi Agent Manager adalah web app decentralized buat users manage portofolio via AI agents autonomous di Base L2. Agents pakai ElizaOS untuk orkestrasi, OpenClaw untuk actions on-chain, ERC-8004 untuk trust, x402 untuk payments, ENS/Basenames untuk naming. Goal: Bikin DeFi accessible & passive, tanpa manual trading.
+## Product Overview
+Web app untuk manage DeFi portofolio via autonomous AI agents di Base L2. Integrasi ElizaOS (orkestrasi), OpenClaw/Nanobot HKUDS (execution), Bankr (self-sustaining), ERC-8004 (trust), x402 (payments), ENS/Basenames (naming).
 
-**User Personas:**
-- Retail Investor: Mau yield tinggi tanpa monitor 24/7.
-- Dev/Builder: Customize agents untuk strategi kompleks.
+## User Personas
+- Retail Investor: Passive yield tanpa monitor.
+- Builder: Customize agents dengan self-funding.
 
-**Functional Requirements:**
+## Functional Requirements
 1. **Authentication & Identity**:
-   - Wallet login via CDP Coinbase atau MetaMask.
-   - Agent naming via ENS/Basenames (e.g., resolve "agent.base.eth" ke address).
-   - Req: Integrate ENS resolver dari Ethereum.org docs.
+   - Wallet login (CDP Coinbase/MetaMask).
+   - Agent naming via ENS/Basenames.
+   - Req: Integrasi Bankr wallet untuk cross-chain access.
 
 2. **Agent Creation & Management**:
-   - Templates: Yield Farming, Rebalancing, Trading.
-   - Customize: Set prompts/personality di ElizaOS (persistent memory untuk learn dari trades).
-   - Deploy: OpenClaw handle wallet integration (e.g., agent punya sub-wallet via Coinbase Agentic Wallets).
-   - Req: Pakai ElizaOS plugins EVM untuk read/write (e.g., transfer ETH/USDC).
+   - Templates: Yield Farming, Rebalancing.
+   - Customize: Prompts/personality di ElizaOS/Nanobot (persistent memory).
+   - Deploy: OpenClaw untuk complex tools, Nanobot untuk lightweight (cron scheduling, multi-LLM seperti Claude).
+   - Req: Bridge Nanobot (Python) ke ElizaOS (TS) via subprocess/API. Gunakan Bankr untuk launch token agent (fair launch, earn fees).
 
 3. **Autonomous Operations**:
-   - Actions: Scan pools (API dari Base docs), execute swaps/deposits.
-   - Coordination: Multi-agents kolaborasi via ElizaOS swarm.
-   - Req: OpenClaw skills untuk DeFi (swaps via Uniswap, yield via Moonwell).
+   - Actions: Scan pools, execute deposits (EVM plugins).
+   - Coordination: ElizaOS swarms + Nanobot channels (Telegram notifications).
+   - Self-Sustaining: Bankr handle funding (token fees bayar LLM/compute).
 
 4. **Trust & Reputation**:
-   - Register agents ke ERC-8004 registries (Identity: ERC-721 metadata, Reputation: on-chain scores dari past performance, Validation: proofs).
-   - Req: Implement lightweight registries seperti di EIP-8004 spec— satu contract per chain.
+   - ERC-8004 registries (identity, rep scores dari performance/fees).
 
 5. **Payments & Monetization**:
-   - Micro-fees via x402 (agent bayar untuk data/oracles, users bayar success fees).
-   - Req: HTTP 402 middleware dari x402.org, integrate dengan Ethereum wallets.
+   - x402 micropayments + Bankr token fees (1-5% trade cut).
 
 6. **UI/UX**:
-   - Dashboard: View agent status, history, ROI.
-   - Mobile-friendly (React).
+   - Dashboard: Agent status, ROI, token launches via Bankr.
 
-**Non-Functional Requirements:**
-- Performance: Low-latency executions (<1s untuk Base tx).
-- Security: Agent permissions limited (spend caps via OpenClaw guardrails), audits untuk contracts.
-- Scalability: Handle 100+ agents via ElizaOS deploy anywhere (local/cloud).
-- Compliance: No KYC, tapi follow Ethereum standards.
-- Tech: TypeScript/Solidity, test coverage >80%.
+## Non-Functional Requirements
+- Performance: Low-latency di Base (<1s tx).
+- Security: Bankr wallet guardrails, Nanobot sandbox (restrictToWorkspace).
+- Scalability: Nanobot lightweight untuk 100+ agents.
+- Tech: TS/Solidity/Python hybrid.
 
-**Success Metrics:** 100 users di MVP, 90% retention, positive feedback di X.
-
+## Success Metrics
+100 users MVP, 90% retention, self-funded agents via Bankr.
