@@ -1,17 +1,52 @@
-# Veragent-DeFi
-DeFi Agent Manager Integration with ElizaOS + ERC-8004 + x402 + OpenClaw + ENS/Basenames
+# Veragent DeFi Agent Hub on Base
 
-App untuk mengelola portofolio crypto secara otomatis. Users input preferensi, lalu AI agents (built with OpenClaw) lakukan trading, rebalancing, atau yield farming. Identitas agents via ERC-8004 memastikan kepercayaan, pembayaran fee via x402, dan ENS untuk labeling agents seperti "traderbot.base.eth". ElizaOS handle runtime agents di Base.
+DeFi Agent Manager Integration with ElizaOS + ERC-8004 + x402 + OpenClaw/Nanobot HKUDS + Bankr + ENS/Basenames on Base L2.
 
+## Overview
+Veragent DeFi adalah web app decentralized untuk manage portofolio DeFi via AI agents autonomous di Base L2. Agents pakai ElizaOS untuk orkestrasi, OpenClaw/Nanobot untuk execution (Nanobot sebagai alternatif lebih ringan), Bankr untuk self-sustaining funding, ERC-8004 untuk trust/rep, x402 untuk micropayments, ENS/Basenames untuk naming. Goal: Bikin DeFi passive & trustless, dengan agents yang auto-fund dirinya via token fees.
 
-### Konsep Utama Platform: "Veragent DeFi Agent Hub on Base"
-Web app (frontend React/NextJS + wallet connect) di mana users bisa:
-- Deploy/customize AI agents untuk manage portofolio DeFi mereka.
-- Agents jalankan tugas autonomous: yield farming, rebalancing, risk hedging, atau trading perps.
-- Semua on-chain di Base untuk low fees & speed.
+Mengapa booming? Align tren agentic DeFi di Base (low cost, fast)
 
-### Integrasi Stack:
-- **ElizaOS**: Framework utama untuk orkestrasi & runtime agents. Agents dibuild sebagai "Elizas" dengan persistent memory (RAG), plugins EVM untuk read/write on-chain data (misal cek APY di Aerodrome atau Uniswap pools di Base). ElizaOS handle multi-agent coordination, seperti swarm agents kolaborasi untuk strategi kompleks.
+## Tech Stack & Integrations
+- **ElizaOS**: Framework TS untuk orkestrasi agents (swarms, EVM plugins untuk on-chain actions seperti transfers/deposits).
+- **OpenClaw**: Tool-calling layer untuk advanced on-chain executions (swaps, yield farming).
+- **Nanobot HKUDS** (Alternatif OpenClaw): Ultra-lightweight Python framework (\~3.5k LOC, v0.1.3.post7 per Feb 2026). Dukung multi-LLM (Claude, GPT, vLLM local), cron scheduling, persistent memory (grep-based), chat channels (Telegram, Discord). Integrasi via bridge (subprocess/API) ke ElizaOS untuk lightweight agents seperti monitoring yields. Setup: `pip install nanobot-ai`, config di `\~/.nanobot/config.json`. Cocok untuk prototipe cepat & tasks sederhana.
+- **Bankr**: Infra self-sustaining—agents launch token (fair launch di Base), earn fees dari trading, fund compute sendiri (wallet built-in, cross-chain). Integrasi via @bankr/sdk (npm), API calls untuk deploy token/trade. Bikin agents "perpetual" tanpa dev funding.
+- **ERC-8004**: On-chain identity/reputation (ephemeral NFTs untuk agents).
+- **x402**: Seamless HTTP micropayments untuk agent fees.
+- **ENS/Basenames**: Human-readable names seperti "yieldbot.base.eth".
+- **Base L2 Native**: Integrations dengan Aerodrome/Uniswap (swaps), Moonwell/Compound (yield), via EVM plugins.
+
+External Docs:
+- Base: https://docs.base.org
+- CDP Coinbase: https://cdp.coinbase.com
+- x402: https://x402.org
+- Ethereum/ENS: https://ethereum.org
+- ERC-8004: https://eips.ethereum.org/EIPS/eip-8004
+- ElizaOS: https://github.com/elizaOS/eliza (plugins & docs)
+- OpenClaw: https://docs.openclaw.ai
+- Nanobot HKUDS: https://github.com/HKUDS/nanobot (last commit Feb 13, 2026; setup via pip/uv)
+- Bankr: https://docs.bankr.bot/ (SDK @bankr/sdk untuk wallet & token)
+
+## Fitur MVP
+1. Agent Marketplace/Dashboard — Browse/deploy agents (filter rep via ERC-8004).
+2. Custom Agent Builder — No-code templates (yield farming, rebalancing), customize via ElizaOS/Nanobot prompts.
+3. Autonomous Execution — Agents scan APY, execute trades (via OpenClaw/Nanobot tools + Bankr wallet).
+4. Reputation System — ERC-8004 tracking (performance, audits).
+5. Monetization — x402 fees + Bankr token launches untuk self-funding.
+6. Monitoring — Real-time logs, notifications via Nanobot channels (Telegram/Discord).
+
+## Setup Repo
+- Clone: `git clone https://github.com/abraham-yusuf/Veragent-DeFi`
+- Install: `bun install` (untuk TS/ElizaOS), `pip install nanobot-ai` (untuk Nanobot), `npm i @bankr/sdk` (untuk Bankr).
+- Deploy contracts: Hardhat/Foundry ke Base Sepolia.
+- Run agents: `nanobot agent -m "Test yield check"` atau ElizaOS `elizaos start`.
+
+## Contributing
+Lihat [TODO.md](./TODO.md) untuk tasks. PR welcome! Post progress di X: @bram0511.
+
+License: MIT
+
 - **OpenClaw**: Tool execution layer—agents pakai OpenClaw untuk tool-calling real (deploy contracts, interact DEX, atau trigger physical actions kalau extend). Banyak demo di X pakai OpenClaw untuk autonomous DeFi (e.g., auto-deposit USDC ke yield vaults, stream payments).
 - **ERC-8004**: Standar identity & reputation on-chain. Setiap agent punya "passport" ERC-8004: track performance (win rate trades, ROI history, audit logs), verifikasi trust (anti-manipulation), dan portable reputation antar chain. Users bisa scan reputation sebelum "hire" atau trust agent dengan funds.
 - **x402**: Payment rails seamless. Agents bayar satu sama lain (misal agent A bayar agent B untuk data oracle via micropayments HTTP 402), atau users bayar fee agent via x402 (no API keys, direct HTTP). Cocok untuk agent-to-agent commerce di DeFi (e.g., pay for premium signals atau execution).
