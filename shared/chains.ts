@@ -93,8 +93,8 @@ export const bscTestnet: ChainConfig = {
   },
   testnet: true,
   contracts: {
-    agentIdentityRegistry: undefined,
-    agentNameResolver: undefined,
+    agentIdentityRegistry: "0x5D0c9D417E854b75b663869AfB53761Ed33f395f",
+    agentNameResolver: "0xF769DD73Bf00457132E7f9F413720EC314AB20eC",
   },
   defi: {
     // Testnet addresses (Pancake V3 periphery often mirrors mainnet CREATE2 where applicable)

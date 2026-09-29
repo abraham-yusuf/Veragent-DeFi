@@ -1,0 +1,10 @@
+{
+  "network": "bscTestnet",
+  "chainId": 97,
+  "deployer": "0x4e89245eda612c9B544EEAB6F30dADF7A72E74ec",
+  "timestamp": "2026-09-29T16:57:11.981Z",
+  "contracts": {
+    "AgentIdentityRegistry": "0x5D0c9D417E854b75b663869AfB53761Ed33f395f",
+    "AgentNameResolver": "0xF769DD73Bf00457132E7f9F413720EC314AB20eC"
+  }
+}

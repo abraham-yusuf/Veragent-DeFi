@@ -31,6 +31,13 @@ Mengapa booming? Align tren agentic DeFi — BSC memberikan biaya rendah, finali
 
 Faucet BSC Testnet: https://testnet.bnbchain.org/faucet-smart
 
+### Deployed Contracts — BSC Testnet (chainId 97)
+
+| Contract | Address | Explorer |
+|---|---|---|
+| AgentIdentityRegistry | `0x5D0c9D417E854b75b663869AfB53761Ed33f395f` | [BscScan](https://testnet.bscscan.com/address/0x5D0c9D417E854b75b663869AfB53761Ed33f395f) |
+| AgentNameResolver | `0xF769DD73Bf00457132E7f9F413720EC314AB20eC` | [BscScan](https://testnet.bscscan.com/address/0xF769DD73Bf00457132E7f9F413720EC314AB20eC) |
+
 External Docs:
 - Base: https://docs.base.org
 - CDP Coinbase: https://cdp.coinbase.com
