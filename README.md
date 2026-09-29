@@ -1,11 +1,11 @@
-# Veragent DeFi Agent Hub on Base
+# Veragent DeFi Agent Hub on BNB Chain
 
-DeFi Agent Manager Integration with ElizaOS + ERC-8004 + x402 + OpenClaw/Nanobot HKUDS + Bankr + ENS/Basenames on Base L2.
+DeFi Agent Manager Integration with ElizaOS + ERC-8004 + x402 + OpenClaw/Nanobot HKUDS + Bankr + ENS/Basenames — **built for BNB Smart Chain (BSC)**, with Base L2 support.
 
 ## Overview
-Veragent DeFi adalah web app decentralized untuk manage portofolio DeFi via AI agents autonomous di Base L2. Agents pakai ElizaOS untuk orkestrasi, OpenClaw/Nanobot untuk execution (Nanobot sebagai alternatif lebih ringan), Bankr untuk self-sustaining funding, ERC-8004 untuk trust/rep, x402 untuk micropayments, ENS/Basenames untuk naming. Goal: Bikin DeFi passive & trustless, dengan agents yang auto-fund dirinya via token fees.
+Veragent DeFi adalah web app decentralized untuk manage portofolio DeFi via AI agents autonomous di **BNB Smart Chain** (primary) dan Base L2. Agents pakai ElizaOS untuk orkestrasi, OpenClaw/Nanobot untuk execution (Nanobot sebagai alternatif lebih ringan), Bankr untuk self-sustaining funding, ERC-8004 untuk trust/rep, x402 untuk micropayments, ENS/Basenames untuk naming. Goal: Bikin DeFi passive & trustless, dengan agents yang auto-fund dirinya via token fees.
 
-Mengapa booming? Align tren agentic DeFi di Base (low cost, fast)
+Mengapa booming? Align tren agentic DeFi — BSC memberikan biaya rendah, finalitas cepat, dan ekosistem DeFi terbesar (PancakeSwap, Venus) untuk pasar Indonesia.
 
 ## Tech Stack & Integrations
 - **ElizaOS**: Framework TS untuk orkestrasi agents (swarms, EVM plugins untuk on-chain actions seperti transfers/deposits).
@@ -15,7 +15,21 @@ Mengapa booming? Align tren agentic DeFi di Base (low cost, fast)
 - **ERC-8004**: On-chain identity/reputation (ephemeral NFTs untuk agents).
 - **x402**: Seamless HTTP micropayments untuk agent fees.
 - **ENS/Basenames**: Human-readable names seperti "yieldbot.base.eth".
-- **Base L2 Native**: Integrations dengan Aerodrome/Uniswap (swaps), Moonwell/Compound (yield), via EVM plugins.
+- **BSC Native**: Integrations dengan PancakeSwap (swaps, V2+V3), Venus Protocol (lending/yield) — chain utama.
+- **Base L2**: Integrations dengan Aerodrome/Uniswap (swaps), Moonwell/Compound (yield), via EVM plugins.
+
+### BSC DeFi Addresses (Mainnet)
+
+| Protocol | Contract | Address |
+|---|---|---|
+| PancakeSwap | Smart Router (V2+V3+Stable) | `0x13f4EA83D0bd40E75C8222255bc855a974568Dd4` |
+| PancakeSwap | SwapRouter V3 | `0x1b81D678ffb9C0263b24A97847620C99d213eB14` |
+| PancakeSwap | V3 Factory | `0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865` |
+| PancakeSwap | V2 Router | `0x10ED43C718714eb63d5aA57B78B54704E256024E` |
+| WBNB | Wrapped BNB | `0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c` |
+| Venus | Comptroller (Core) | `0xfD36E2c2a6789Db23113685031d7F16329158384` |
+
+Faucet BSC Testnet: https://testnet.bnbchain.org/faucet-smart
 
 External Docs:
 - Base: https://docs.base.org
@@ -39,7 +53,7 @@ External Docs:
 ## Setup Repo
 - Clone: `git clone https://github.com/abraham-yusuf/Veragent-DeFi`
 - Install: `bun install` (untuk TS/ElizaOS), `pip install nanobot-ai` (untuk Nanobot), `npm i @bankr/sdk` (untuk Bankr).
-- Deploy contracts: Hardhat/Foundry ke Base Sepolia.
+- Deploy contracts: Hardhat/Foundry ke **BSC Testnet** (`npx hardhat ignition deploy ignition/modules/AgentRegistry.ts --network bscTestnet`) atau Base Sepolia.
 - Run agents: `nanobot agent -m "Test yield check"` atau ElizaOS `elizaos start`.
 
 ## Contributing

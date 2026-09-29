@@ -1,41 +1,84 @@
 // agents/yield-optimizer/src/plugins/evm-registry-plugin.ts
 import { Plugin } from '@elizaos/core';
 import { ethers } from 'ethers';
+import { getChain, CHAINS, DEFAULT_CHAIN_KEY, type ChainConfig } from '../chains.js';
 
-const provider = new ethers.JsonRpcProvider('https://base-sepolia-rpc.publicnode.com');
-const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY || '', provider);
+// ABI minimal (sesuaikan dengan contract)
+const identityAbi = [
+  'function registerAgent(address to, string name, string specialization, string tokenURI) external returns (uint256)',
+  'function getAgentByName(string name) external view returns (uint256 tokenId, tuple(string name, string specialization, uint256 reputationScore, uint256 createdAt, bool active) identity)',
+  'function totalAgents() external view returns (uint256)',
+];
+const resolverAbi = ['function setName(address agent, string name) external'];
 
-const identityAddress = '0x9664B2AfF8c3d280fe6cD9149a5BdEfC4C3EB7b7';
-const resolverAddress = '0xbC481897128410491b39BB3223D6345c324249CB';
-
-// ABI minimal (sesuaikan dengan contract kamu)
-const identityAbi = ['function mintIdentity(address owner, string memory name) external returns (uint256)'];
-const resolverAbi = ['function setName(address agent, string memory name) external'];
+function makeProvider(chain: ChainConfig) {
+  return new ethers.JsonRpcProvider(chain.rpcUrl, chain.chainId);
+}
 
 export const evmRegistryPlugin: Plugin = {
   name: 'evm-registry',
   tools: [
     {
-      name: 'mintAgentIdentity',
-      description: 'Mint new ERC-8004 identity for this agent',
-      parameters: { owner: 'string', name: 'string' },
-      execute: async ({ owner, name }: { owner: string; name: string }) => {
-        const contract = new ethers.Contract(identityAddress, identityAbi, wallet);
-        const tx = await contract.mintIdentity(owner, name);
-        await tx.wait();
-        return { txHash: tx.hash, success: true };
-      }
+      name: 'registerAgentIdentity',
+      description:
+        'Register new ERC-8004 agent identity on the active chain (default: BSC Testnet)',
+      parameters: {
+        name: 'string',
+        specialization: 'string',
+        chain: 'string (optional: bscTestnet | bsc | baseSepolia | base)',
+      },
+      execute: async ({
+        name,
+        specialization,
+        chain,
+      }: {
+        name: string;
+        specialization: string;
+        chain?: string;
+      }) => {
+        const cfg = getChain(chain ?? DEFAULT_CHAIN_KEY);
+        if (!cfg.registryAddress) throw new Error(`No registry deployed on ${cfg.name}`);
+        const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY || '', makeProvider(cfg));
+        const contract = new ethers.Contract(cfg.registryAddress, identityAbi, wallet);
+        const tx = await contract.registerAgent(wallet.address, name, specialization, '');
+        const receipt = await tx.wait();
+        return {
+          txHash: tx.hash,
+          chainId: cfg.chainId,
+          explorer: `${cfg.explorer}/tx/${tx.hash}`,
+          success: receipt.status === 1,
+        };
+      },
     },
     {
-      name: 'setAgentBasename',
-      description: 'Set Basename for agent via resolver',
-      parameters: { agentAddress: 'string', basename: 'string' },
-      execute: async ({ agentAddress, basename }: { agentAddress: string; basename: string }) => {
-        const contract = new ethers.Contract(resolverAddress, resolverAbi, wallet);
-        const tx = await contract.setName(agentAddress, basename);
-        await tx.wait();
-        return { txHash: tx.hash };
-      }
-    }
-  ]
+      name: 'lookupAgent',
+      description: 'Look up a registered agent by name (read-only, any supported chain)',
+      parameters: { name: 'string', chain: 'string (optional)' },
+      execute: async ({ name, chain }: { name: string; chain?: string }) => {
+        const cfg = getChain(chain ?? DEFAULT_CHAIN_KEY);
+        if (!cfg.registryAddress) throw new Error(`No registry deployed on ${cfg.name}`);
+        const contract = new ethers.Contract(cfg.registryAddress, identityAbi, makeProvider(cfg));
+        const [tokenId, identity] = await contract.getAgentByName(name);
+        return { tokenId: tokenId.toString(), ...identity, chain: cfg.name };
+      },
+    },
+    {
+      name: 'chainHealth',
+      description: 'Check connectivity: latest block number + agent wallet balance on a chain',
+      parameters: { chain: 'string (optional)' },
+      execute: async ({ chain }: { chain?: string }) => {
+        const cfg = getChain(chain ?? DEFAULT_CHAIN_KEY);
+        const provider = makeProvider(cfg);
+        const block = await provider.getBlockNumber();
+        let balance = '0';
+        if (process.env.AGENT_PRIVATE_KEY) {
+          const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY, provider);
+          balance = ethers.formatEther(await provider.getBalance(wallet.address));
+        }
+        return { chain: cfg.name, chainId: cfg.chainId, blockNumber: block, agentBalance: balance };
+      },
+    },
+  ],
 };
+
+export { CHAINS, getChain, DEFAULT_CHAIN_KEY };
