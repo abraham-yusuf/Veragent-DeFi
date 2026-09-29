@@ -53,7 +53,7 @@ External Docs:
 ## Setup Repo
 - Clone: `git clone https://github.com/abraham-yusuf/Veragent-DeFi`
 - Install: `bun install` (untuk TS/ElizaOS), `pip install nanobot-ai` (untuk Nanobot), `npm i @bankr/sdk` (untuk Bankr).
-- Deploy contracts: Hardhat/Foundry ke **BSC Testnet** (`npx hardhat ignition deploy ignition/modules/AgentRegistry.ts --network bscTestnet`) atau Base Sepolia.
+- Deploy contracts: Hardhat ke **BSC Testnet** — `./scripts/deploy-bsc.sh testnet` (butuh `BSC_TESTNET_PRIVATE_KEY` di `contracts/.env` + tBNB dari faucet). Artifact tersimpan di `deployments/bscTestnet.json`.
 - Run agents: `nanobot agent -m "Test yield check"` atau ElizaOS `elizaos start`.
 
 ## Contributing
