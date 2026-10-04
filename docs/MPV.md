@@ -59,3 +59,14 @@
 
 - Test di Base Sepolia dengan dana test
 - Ukur: sukses rate x402 payment, latency register agent, error rate tools
+
+## Flow
+```bash
+User (wallet) 
+  → Frontend: deploy/register agent (ERC-8004)
+  → Agent Runtime (OpenAI Agents SDK)
+       → AgentKit (CDP wallet)
+            → Base: B20 transfer / swap / createB20
+            → x402: bayar API atau terima fee
+  → Dashboard: balance, rep, payment history
+```
