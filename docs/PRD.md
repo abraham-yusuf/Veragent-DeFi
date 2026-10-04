@@ -1,43 +1,87 @@
-# Product Requirements Document (PRD) - Veragent DeFi Agent Hub
+# Product Requirements Document (PRD) — Veragent DeFi Agent Hub
 
-## Product Overview
-Web app untuk manage DeFi portofolio via autonomous AI agents di Base L2. Integrasi ElizaOS (orkestrasi), OpenClaw/Nanobot HKUDS (execution), Bankr (self-sustaining), ERC-8004 (trust), x402 (payments), ENS/Basenames (naming).
+## 1. Product Overview
 
-## User Personas
-- Retail Investor: Passive yield tanpa monitor.
-- Builder: Customize agents dengan self-funding.
+Veragent adalah web app untuk mengelola portofolio DeFi melalui **AI agents otonom di Base**, dengan:
 
-## Functional Requirements
-1. **Authentication & Identity**:
-   - Wallet login (CDP Coinbase/MetaMask).
-   - Agent naming via ENS/Basenames.
-   - Req: Integrasi Bankr wallet untuk cross-chain access.
+- **Identity & trust** on-chain (ERC-8004)
+- **Micropayments** agent-to-service dan user-to-agent (x402)
+- **Token native Base (B20)** sebagai aset pembayaran & utility
+- **Agent runtime** modern (OpenAI Agents SDK) + **Coinbase AgentKit** untuk aksi onchain
 
-2. **Agent Creation & Management**:
-   - Templates: Yield Farming, Rebalancing.
-   - Customize: Prompts/personality di ElizaOS/Nanobot (persistent memory).
-   - Deploy: OpenClaw untuk complex tools, Nanobot untuk lightweight (cron scheduling, multi-LLM seperti Claude).
-   - Req: Bridge Nanobot (Python) ke ElizaOS (TS) via subprocess/API. Gunakan Bankr untuk launch token agent (fair launch, earn fees).
+**Bukan** fokus utama MVP: self-funding via token launch (Bankr), multi-runtime (OpenClaw/Nanobot), atau BSC-first.
 
-3. **Autonomous Operations**:
-   - Actions: Scan pools, execute deposits (EVM plugins).
-   - Coordination: ElizaOS swarms + Nanobot channels (Telegram notifications).
-   - Self-Sustaining: Bankr handle funding (token fees bayar LLM/compute).
+## 2. Goals
 
-4. **Trust & Reputation**:
-   - ERC-8004 registries (identity, rep scores dari performance/fees).
+| Goal | Metrik sukses (MVP) |
+|------|---------------------|
+| Agent bisa bayar & dieksekusi onchain | ≥ 1 flow x402 B20 sukses di testnet |
+| User percaya agent | Agent terdaftar ERC-8004 + score terlihat |
+| Time-to-value cepat | Deploy agent < 5 menit dari connect wallet |
+| Stack maintainable | 1 runtime TS, tanpa bridge Python |
 
-5. **Payments & Monetization**:
-   - x402 micropayments + Bankr token fees (1-5% trade cut).
+## 3. User Personas
 
-6. **UI/UX**:
-   - Dashboard: Agent status, ROI, token launches via Bankr.
+1. **Retail Investor** — ingin yield/rebalance pasif tanpa monitor 24/7  
+2. **Builder / Power User** — deploy agent custom, bayar fee pakai B20, monitor onchain  
 
-## Non-Functional Requirements
-- Performance: Low-latency di Base (<1s tx).
-- Security: Bankr wallet guardrails, Nanobot sandbox (restrictToWorkspace).
-- Scalability: Nanobot lightweight untuk 100+ agents.
-- Tech: TS/Solidity/Python hybrid.
+## 4. Functional Requirements
 
-## Success Metrics
-100 users MVP, 90% retention, self-funded agents via Bankr.
+### 4.1 Authentication & Identity
+- Wallet login (MetaMask / Coinbase Wallet / RainbowKit) di **Base**
+- Register agent → mint identity di `AgentIdentityRegistry` (ERC-8004)
+- (Phase 2+) link Basename / AgentNameResolver
+
+### 4.2 Agent Creation & Management
+- Template MVP: **Yield Optimizer**
+- Runtime: **OpenAI Agents SDK**
+- Onchain actions via **AgentKit** (transfer, balance, nanti swap)
+- Config: risk level, assets (termasuk B20), spend limit
+
+### 4.3 Autonomous Operations (MVP terbatas)
+- Tools: cek balance B20, transfer B20, panggil API berbayar (x402)
+- Belum wajib: auto-compound production-grade / multi-DEX routing
+
+### 4.4 Payments & Monetization
+- **x402** sebagai payment rail utama
+- Asset: **B20** (primary) + USDC (opsional)
+- Agent sebagai **buyer** (bayar data/API)
+- (Opsional) service Veragent sebagai **seller** (endpoint 402)
+
+### 4.5 Trust & Reputation
+- On-chain identity + reputation score (0–10000)
+- Dashboard menampilkan score & status active
+
+### 4.6 UI/UX
+- Connect wallet, deploy agent, list agents, balance B20, log aksi/payment
+
+## 5. Non-Functional Requirements
+
+- **Chain:** Base Sepolia → Base Mainnet; gas rendah, finalitas cepat
+- **Security:** CDP managed wallet (no raw PK di production); spend controls x402
+- **Stack:** TypeScript end-to-end (agents + frontend); Solidity untuk registry
+- **Observability:** log tool calls + tx hash
+
+## 6. Explicit Non-Goals (MVP)
+
+- OpenClaw / Nanobot sebagai runtime
+- Bankr token launch (fase monetisasi setelah ada user)
+- Full multi-agent swarm
+- BSC sebagai chain utama
+
+## 7. Success Metrics
+
+| Metrik | Target MVP |
+|--------|------------|
+| Agents registered on-chain | ≥ 20 (testnet) |
+| x402 payments sukses (B20) | ≥ 50 |
+| Critical path tanpa crash | 99% tool success di happy path |
+| Time deploy agent | < 5 menit |
+
+## 8. Tech Stack (Canonical)
+
+- Frontend: Next.js, Wagmi, RainbowKit  
+- Agents: OpenAI Agents SDK, Coinbase AgentKit, x402 SDK, viem  
+- Contracts: Hardhat, OpenZeppelin, ERC-8004 registry  
+- Token: B20 (Base native standard)  
+- Payments: x402 + CDP Facilitator (production)
