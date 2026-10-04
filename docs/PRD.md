@@ -85,3 +85,75 @@ Veragent adalah web app untuk mengelola portofolio DeFi melalui **AI agents oton
 - Contracts: Hardhat, OpenZeppelin, ERC-8004 registry  
 - Token: B20 (Base native standard)  
 - Payments: x402 + CDP Facilitator (production)
+
+
+## 9. Arsitektur Target Detail dan Prinsip
+- Base primary (B20 + x402 native)
+- 1 agent runtime: OpenAI Agents SDK (TypeScript)
+- Onchain layer: Coinbase AgentKit + CDP Agentic Wallet
+- Payment: x402 (B20 + USDC)
+- Identity: ERC-8004 registry yang sudah ada
+- Ditunda: OpenClaw, Nanobot, Bankr (fase monetisasi)
+
+### Struktur Folder Target
+
+```text
+Veragent-DeFi/
+├── agents/                          # Agent runtime (OpenAI Agents SDK + AgentKit)
+│   ├── src/
+│   │   ├── index.ts                 # Entry: start agent runtime
+│   │   ├── agent.ts                 # OpenAI Agents SDK agent definition
+│   │   ├── types.ts                 # Types (update)
+│   │   ├── config.ts                # Network, B20, registry addresses
+│   │   ├── wallet/
+│   │   │   └── cdp.ts               # CDP Agentic Wallet provider
+│   │   ├── plugins/
+│   │   │   ├── agentkit.ts          # AgentKit actions (swap, transfer, x402)
+│   │   │   ├── b20.ts               # createB20, mint, transfer, policy
+│   │   │   ├── evm.ts               # Existing + write actions
+│   │   │   └── x402.ts              # wrapFetchWithPayment + settle
+│   │   ├── templates/
+│   │   │   ├── yield-optimizer.ts
+│   │   │   ├── trade-executor.ts
+│   │   │   └── portfolio-rebalancer.ts
+│   │   └── tools/                   # Tool definitions for Agents SDK
+│   │       ├── defi.ts
+│   │       ├── payment.ts
+│   │       └── identity.ts
+│   ├── package.json
+│   └── .env.example
+│
+├── contracts/                       # Tetap (Hardhat)
+│   ├── contracts/
+│   │   ├── AgentIdentityRegistry.sol
+│   │   └── AgentNameResolver.sol
+│   └── ...
+│
+├── frontend/                        # Next.js dashboard
+│   ├── src/
+│   │   ├── app/
+│   │   ├── components/
+│   │   │   ├── AgentCard.tsx
+│   │   │   ├── DeployAgent.tsx
+│   │   │   └── PaymentStatus.tsx
+│   │   └── config/
+│   │       └── wagmi.ts             # Base primary, BSC secondary
+│   └── ...
+│
+├── services/                        # NEW: x402 resource server (opsional seller)
+│   └── x402-api/
+│       ├── src/server.ts            # Express/Fastify + paymentMiddleware
+│       └── package.json
+│
+├── shared/                          # Addresses, ABIs, constants
+│   ├── addresses.ts                 # B20 factory, registry, etc.
+│   └── abis/
+│
+├── docs/
+│   ├── MPV.md
+│   ├── PRD.md
+│   ├── ROADMAP.md
+│   └── ARCHITECTURE.md              # NEW (opsional)
+│
+└── TODO.md
+```
